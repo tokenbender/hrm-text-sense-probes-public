@@ -43,6 +43,27 @@ adding plausible but unsupported context. HRM more often fails by compression:
 it selects a nearby answer-shaped fragment and stops before preserving the full
 instruction or all constraints.
 
+## Where HRM Looked Useful
+
+HRM's best pocket was short-answer extraction. It was strongest when the task
+asked for the first matching item, one failed check, one room assignment, or one
+current status. In the stop-condition group, the HRM row matched the expected
+short answer on all ten prompts by manual read: `Shelf B`, `Door 2`, `blue`,
+`B`, `Kit 2`, `10`, `box B`, `Towel 2`, `south`, and `latch failed`.
+
+It also handled several compact update/status prompts. Good examples include
+the walnut tart allergen correction, the Room E / Room F setup edit, the Vera /
+MOSS shipment-status swap, and the current invoice-recipient prompt where
+`Mira` was the needed answer.
+
+That strength did not look unique for its weight class in this run. The better
+standard Transformer instruct rows usually matched those easy extraction wins
+and were much better when the prompt required explanation, multiple
+constraints, epistemic restraint, or reference tracking. The interesting HRM
+signal is therefore not "better small model." It is a distinctive operating
+profile: short, decisive, sometimes exactly right, and often prematurely
+compressed.
+
 Among the around-1B instruct comparators, the strongest practical rows came
 from SmolLM2-1.7B-Instruct, LFM2.5-1.2B-Instruct, Qwen2.5-1.5B-Instruct, and
 Falcon3-1B-Instruct, depending on the area. SmolLM2 had the best compact
