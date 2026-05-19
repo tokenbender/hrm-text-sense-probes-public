@@ -22,11 +22,26 @@ errors. The prompt set expands the original 12 nonce probes into 12 areas with
 
 ## Broad Verdict
 
-HRM-Text-1B is fast and sometimes lands the core state update, but it is too
-brittle for general English sense checking. It collapses to one token in several
+HRM-Text-1B is not fast in generated-token throughput in this run. It often
+looks quick at the prompt level because it emits very short answers: 17.2 output
+tokens on average, with a 1.7 second median latency. Its decoded throughput was
+about 5 output tokens per second. The stronger standard Transformer rows
+usually decoded around 20 to 37 output tokens per second while producing longer
+and more useful answers. The throughput measure is `output_tokens / generate
+elapsed_seconds`, so it includes short-prompt prefill cost rather than isolating
+only the final decode loop.
+
+On quality, HRM sometimes lands the core state update, but it is too brittle
+for general English sense checking. It collapses to one token in several
 ordinary prompts (`A`, `Door 2`, `Bo's`, `inbox`) and often drops required
 exceptions or the second half of a question. It looks more like a terse pattern
 extractor than a robust instruction-following text model.
+
+The failure pattern differs from the regular Transformer rows. The standard
+instruct models tend to fail by overexplaining, drifting, echoing the prompt, or
+adding plausible but unsupported context. HRM more often fails by compression:
+it selects a nearby answer-shaped fragment and stops before preserving the full
+instruction or all constraints.
 
 Among the around-1B instruct comparators, the strongest practical rows came
 from SmolLM2-1.7B-Instruct, LFM2.5-1.2B-Instruct, Qwen2.5-1.5B-Instruct, and

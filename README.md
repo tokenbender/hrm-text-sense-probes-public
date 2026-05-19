@@ -22,16 +22,44 @@ The expanded run contains:
 - 1320 raw generations.
 - 0 generation errors in the final expanded run.
 
-The short read is that HRM-Text-1B is fast and sometimes effective on simple
-state or stop-condition prompts, but it is not robust as a general English
-sense model in this setup. It often answers too tersely, drops required
-constraints, or collapses ordinary instruction-following prompts into one-token
-answers. The stronger around-1B instruct rows in this run were
-SmolLM2-1.7B-Instruct, LFM2.5-1.2B-Instruct, Qwen2.5-1.5B-Instruct, and
-Falcon3-1B-Instruct, depending on the area.
+The short read is that HRM-Text-1B was not fast in generated-token throughput.
+It often had low prompt latency because it emitted very short answers: 17.2
+output tokens on average, with a 1.7 second median latency. Its decoded
+throughput was only about 5 output tokens per second. The stronger standard
+Transformer rows usually decoded around 20 to 37 output tokens per second while
+also producing fuller answers.
+
+Quality followed the same pattern. HRM sometimes landed simple state or
+stop-condition prompts, but it was not robust as a general English sense model
+in this setup. It often answered too tersely, dropped required constraints, or
+collapsed ordinary instruction-following prompts into one-token answers. The
+stronger around-1B instruct rows in this run were SmolLM2-1.7B-Instruct,
+LFM2.5-1.2B-Instruct, Qwen2.5-1.5B-Instruct, and Falcon3-1B-Instruct,
+depending on the area.
+
+The failure mode was also different from the regular Transformer rows. The
+standard instruct models tended to fail by overexplaining, drifting, echoing the
+prompt, or adding plausible but unsupported context. HRM more often failed by
+compression: it selected a nearby answer-shaped fragment and stopped before it
+had preserved the full instruction or all constraints.
 
 Please treat that statement as a qualitative read over this prompt set, not as
 a universal model ranking.
+
+## Speed Snapshot
+
+The throughput column is `output_tokens / model.generate elapsed_seconds`, so it
+includes the short-prompt prefill cost. It is still useful for comparing what
+this harness actually delivered on the same A6000 run.
+
+| Model row | Avg output tokens | Median latency | Output tokens/sec |
+| --- | ---: | ---: | ---: |
+| HRM-Text-1B direct | 17.2 | 1.69s | 5.0 |
+| SmolLM2 1.7B Instruct | 76.4 | 2.20s | 25.3 |
+| H2O Danube3 500M Chat | 107.7 | 1.79s | 36.7 |
+| Falcon3 1B Instruct | 124.5 | 2.59s | 33.2 |
+| LFM2.5 1.2B Instruct | 135.9 | 3.33s | 35.6 |
+| Qwen2.5 1.5B Instruct | 131.8 | 5.49s | 20.5 |
 
 ## What To Open First
 

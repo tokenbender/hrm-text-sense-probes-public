@@ -245,6 +245,17 @@
 
     <section>
       <h2>Model Summary</h2>
+      <div class="notice">
+        <strong>Speed should be read carefully.</strong>
+        HRM-Text-1B did not have fast generated-token throughput in this run. It
+        often had low prompt latency because it produced very short answers:
+        17.2 output tokens on average, 1.7 seconds median latency, and about
+        5 output tokens per elapsed generation second, including prompt prefill
+        cost. The stronger standard Transformer rows
+        usually decoded around 20 to 37 output tokens per second while producing
+        longer answers. The main HRM failure mode was compressed under-answering,
+        not verbose drift.
+      </div>
       <table>
         <thead><tr><th>Model</th><th>ID</th><th>Revision</th><th>Adapter</th><th>Effective generation config</th><th>Judgment counts</th></tr></thead>
         <tbody>
