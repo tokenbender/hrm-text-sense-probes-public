@@ -266,6 +266,17 @@
         because the stronger Transformer instruct rows usually matched those
         wins and handled broader English constraints better.
       </div>
+      <div class="notice">
+        <strong>Why the official benchmarks can still look strong.</strong>
+        The upstream HRM-Text report uses different conditions from this raw
+        zero-shot probe: <code>synth,cot</code> for GSM8K and MATH, and
+        <code>direct</code> with benchmark-specific few-shot prompts for DROP
+        and multiple-choice benchmarks. The model card also describes
+        HRM-Text-1B as a pre-alignment, non-chat checkpoint and says
+        <code>direct</code> plus 2 to 8 few-shot examples is strongest for NLP
+        tasks. This report tests a different question: zero-shot English
+        instruction behavior and raw output quality.
+      </div>
       <table>
         <thead><tr><th>Model</th><th>ID</th><th>Revision</th><th>Adapter</th><th>Effective generation config</th><th>Judgment counts</th></tr></thead>
         <tbody>

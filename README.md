@@ -62,6 +62,34 @@ short, decisive, sometimes exactly right, and often prematurely compressed.
 Please treat that statement as a qualitative read over this prompt set, not as
 a universal model ranking.
 
+## Why The Official Benchmarks Can Still Look Strong
+
+The upstream HRM-Text report frames the model much more favorably on standard
+benchmarks. Its 1B reference run reports 84.7% on GSM8K, 56.5% on MATH, 82.3%
+on DROP, 60.7% on MMLU, 81.9% on ARC-Challenge, 63.4% on HellaSwag, 72.4% on
+Winogrande, and 86.2% on BoolQ. Those are strong numbers for a 1B pretraining
+run.
+
+Those benchmark results do not measure the same behavior as this probe. The
+upstream evaluation uses the `synth,cot` condition for GSM8K and MATH, and
+`direct` with benchmark-specific few-shot prompts for DROP and multiple-choice
+benchmarks. The model card also states that HRM-Text-1B is a pre-alignment,
+non-chat, non-instruction-tuned checkpoint. It recommends `direct` plus 2 to 8
+few-shot examples for classification, extraction, structured output, and
+short-form QA, and it says pure zero-shot is noticeably weaker.
+
+This repository intentionally tests a different question: what happens when the
+public checkpoint is used zero-shot on hand-written English sense probes, with
+raw outputs preserved rather than converted into a benchmark score. Both things
+can be true at once. HRM-Text may be unusually efficient on structured
+benchmark answering for its parameter count and training budget, while still
+being brittle as a zero-shot English instruction follower.
+
+The next fair HRM-centered follow-up would add two more HRM rows on the same
+120 prompts: a `direct` few-shot row for extraction-style tasks and a
+`synth,cot` row for reasoning-style tasks. That would test the model in the
+stronger official modes without replacing the raw zero-shot result.
+
 ## Speed Snapshot
 
 The throughput column is `output_tokens / model.generate elapsed_seconds`, so it
@@ -91,6 +119,9 @@ this harness actually delivered on the same A6000 run.
   sampling choices.
 - `docs/benchmaxxing_controls.md` explains what was done to reduce ordinary
   benchmark or synthetic-data leakage.
+- Upstream context: the [HRM-Text GitHub README](https://github.com/sapientinc/HRM-Text)
+  and [HRM-Text-1B model card](https://huggingface.co/sapientinc/HRM-Text-1B)
+  describe the official benchmark setup and prompting guidance.
 
 ## Models In The Expanded Run
 

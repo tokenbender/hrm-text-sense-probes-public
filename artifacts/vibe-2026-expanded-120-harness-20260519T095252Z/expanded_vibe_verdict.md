@@ -64,6 +64,33 @@ signal is therefore not "better small model." It is a distinctive operating
 profile: short, decisive, sometimes exactly right, and often prematurely
 compressed.
 
+## Relationship To The Official Benchmarks
+
+The upstream HRM-Text report frames the model much more strongly on standard
+benchmarks. Its 1B reference run reports 84.7% on GSM8K, 56.5% on MATH, 82.3%
+on DROP, 60.7% on MMLU, 81.9% on ARC-Challenge, 63.4% on HellaSwag, 72.4% on
+Winogrande, and 86.2% on BoolQ. Those numbers are strong for a 1B pretraining
+run.
+
+That result is not directly contradicted by this probe. The official evaluation
+uses `synth,cot` for GSM8K and MATH, and `direct` with benchmark-specific
+few-shot prompts for DROP and the multiple-choice benchmarks. The model card
+also describes HRM-Text-1B as a pre-alignment, non-chat, non-instruction-tuned
+checkpoint and says `direct` plus 2 to 8 few-shot examples is the strongest
+measured setup for NLP tasks, while pure zero-shot is noticeably weaker.
+
+This artifact answers a narrower question: how the public checkpoint behaves
+zero-shot on hand-written English sense probes, with raw text quality and
+failure modes exposed. Both readings can be true. HRM-Text may be unusually
+efficient at structured benchmark answering for its parameter count and
+training budget, while still being brittle as a zero-shot English instruction
+follower.
+
+The clean next experiment would add official-mode HRM rows on the same 120
+prompts: `direct` plus few-shot demonstrations for extraction-style prompts,
+and `synth,cot` for reasoning-style prompts. That would test the model in its
+stronger recommended modes without hiding the raw zero-shot behavior.
+
 Among the around-1B instruct comparators, the strongest practical rows came
 from SmolLM2-1.7B-Instruct, LFM2.5-1.2B-Instruct, Qwen2.5-1.5B-Instruct, and
 Falcon3-1B-Instruct, depending on the area. SmolLM2 had the best compact
