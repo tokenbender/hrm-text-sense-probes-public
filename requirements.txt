@@ -1,0 +1,7 @@
+accelerate
+huggingface_hub
+safetensors
+sentencepiece
+protobuf
+git+https://github.com/huggingface/transformers.git@main
+
